@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>748647211743-5488jbat29lcou5h3ckrqh4nr5leddpn.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.748647211743-5488jbat29lcou5h3ckrqh4nr5leddpn</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAP7NAeQV05V3lNwD5kFpKlbyALP-FFUko</string>
+	<key>GCM_SENDER_ID</key>
+	<string>748647211743</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>exam.nclex</string>
+	<key>PROJECT_ID</key>
+	<string>nclex-exam</string>
+	<key>STORAGE_BUCKET</key>
+	<string>nclex-exam.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:748647211743:ios:cb2ab07ad8e4f29041bf6a</string>
+</dict>
+</plist>
