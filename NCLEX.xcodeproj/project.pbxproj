@@ -271,6 +271,10 @@
 		DE342050277045EB00632F72 /* Scalable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE341E2E2770453000632F72 /* Scalable.swift */; };
 		DE342051277045F100632F72 /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE341EA02770453000632F72 /* Stats.swift */; };
 		DE342052277045F400632F72 /* StatsShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE341EAA2770453000632F72 /* StatsShareManager.swift */; };
+		DE93753627ABB0560073F27C /* NumberLaunches.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93753527ABB0560073F27C /* NumberLaunches.swift */; };
+		DE93753927ABB2080073F27C /* AmplitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93753827ABB2080073F27C /* AmplitudeManager.swift */; };
+		DE93753B27ABBB9F0073F27C /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93753A27ABBB9F0073F27C /* FirebaseManager.swift */; };
+		DE93753D27ABC80A0073F27C /* FacebookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93753C27ABC80A0073F27C /* FacebookManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -564,6 +568,10 @@
 		DE341F612770453000632F72 /* OSlideTimeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSlideTimeView.swift; sourceTree = "<group>"; };
 		DE341F622770453000632F72 /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		DE341F632770453000632F72 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		DE93753527ABB0560073F27C /* NumberLaunches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberLaunches.swift; sourceTree = "<group>"; };
+		DE93753827ABB2080073F27C /* AmplitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeManager.swift; sourceTree = "<group>"; };
+		DE93753A27ABBB9F0073F27C /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		DE93753C27ABC80A0073F27C /* FacebookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookManager.swift; sourceTree = "<group>"; };
 		E1F36D41DB121197042C2BB6 /* Pods-NCLEX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NCLEX.debug.xcconfig"; path = "Target Support Files/Pods-NCLEX/Pods-NCLEX.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -743,6 +751,7 @@
 		DE341E232770453000632F72 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				DE93753727ABB1EF0073F27C /* Analytics */,
 				DE341E242770453000632F72 /* Extension */,
 				DE341E2C2770453000632F72 /* GlobalDefinitions.swift */,
 				DE341E2D2770453000632F72 /* Utils */,
@@ -779,6 +788,7 @@
 				DE341E322770453000632F72 /* Fonts.swift */,
 				DE341E332770453000632F72 /* Error */,
 				DE341E352770453000632F72 /* Weak.swift */,
+				DE93753527ABB0560073F27C /* NumberLaunches.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1660,6 +1670,16 @@
 			path = Welcome;
 			sourceTree = "<group>";
 		};
+		DE93753727ABB1EF0073F27C /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				DE93753827ABB2080073F27C /* AmplitudeManager.swift */,
+				DE93753A27ABBB9F0073F27C /* FirebaseManager.swift */,
+				DE93753C27ABC80A0073F27C /* FacebookManager.swift */,
+			);
+			path = Analytics;
+			sourceTree = "<group>";
+		};
 		EFC5C13FB4813BBF4FA69A9C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1879,6 +1899,7 @@
 				DE341FAA2770453000632F72 /* GetReferencesRequest.swift in Sources */,
 				DE341FF32770453000632F72 /* TestBottomButtonState.swift in Sources */,
 				DE341FE82770453000632F72 /* QuestionReferenceCell.swift in Sources */,
+				DE93753B27ABBB9F0073F27C /* FirebaseManager.swift in Sources */,
 				DE341F832770453000632F72 /* PaygateManagerCore.swift in Sources */,
 				DE3420232770453000632F72 /* MainStatsElement.swift in Sources */,
 				DE341F8A2770453000632F72 /* Paygate.swift in Sources */,
@@ -1934,6 +1955,7 @@
 				DE341FFF2770453000632F72 /* AVPlayerView.swift in Sources */,
 				DE341FC72770453000632F72 /* SettingsViewModel.swift in Sources */,
 				DE341FE92770453000632F72 /* ExplanationTextCell.swift in Sources */,
+				DE93753D27ABC80A0073F27C /* FacebookManager.swift in Sources */,
 				DE341FCB2770453000632F72 /* STLinksCell.swift in Sources */,
 				DE3420112770453000632F72 /* TestStatsFilter.swift in Sources */,
 				DE3420022770453000632F72 /* PaygateView.swift in Sources */,
@@ -2079,6 +2101,7 @@
 				DE3420212770453000632F72 /* StatsViewController.swift in Sources */,
 				DE341FA42770453000632F72 /* QuestionManagerCore.swift in Sources */,
 				DE34203E2770453000632F72 /* OSlideGoalCell.swift in Sources */,
+				DE93753927ABB2080073F27C /* AmplitudeManager.swift in Sources */,
 				DE341F672770453000632F72 /* UITapGestureRecognizerExtension.swift in Sources */,
 				DE3420352770453000632F72 /* ReferencesTableCell.swift in Sources */,
 				DE341FAB2770453000632F72 /* SetSelectCourseRequest.swift in Sources */,
@@ -2090,6 +2113,7 @@
 				DE341F7E2770453000632F72 /* RxActivityIndicator.swift in Sources */,
 				DE3420012770453000632F72 /* PaygateViewControllerDelegate.swift in Sources */,
 				DE341F6B2770453000632F72 /* GlobalDefinitions.swift in Sources */,
+				DE93753627ABB0560073F27C /* NumberLaunches.swift in Sources */,
 				DE3420312770453000632F72 /* OStepView.swift in Sources */,
 				DE341FB22770453000632F72 /* TestMode.swift in Sources */,
 			);
@@ -2259,7 +2283,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2W4U9UWRKZ;
 				INFOPLIST_FILE = "$(SRCROOT)/NCLEX/Resource/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2287,7 +2311,7 @@
 				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 2W4U9UWRKZ;
 				INFOPLIST_FILE = "$(SRCROOT)/NCLEX/Resource/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

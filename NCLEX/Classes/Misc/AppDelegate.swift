@@ -7,7 +7,6 @@
 
 import UIKit
 import RxCocoa
-import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,11 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
+        
+        NumberLaunches().launch()
+        
         let vc = SplashViewController.make(generateStep: generateStepInSplash.asSignal())
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
         
-        FirebaseApp.configure()
+        FacebookManager.shared.initialize(app: application, launchOptions: launchOptions)
+        AmplitudeManager.shared.initialize()
+        FirebaseManager.shared.initialize()
         
         addDelegates()
         
@@ -91,9 +95,9 @@ private extension AppDelegate {
                                    backendApiKey: GlobalDefinitions.sdkApiKey,
                                    amplitudeApiKey: GlobalDefinitions.amplitudeApiKey,
                                    appsFlyerApiKey: GlobalDefinitions.appsFlyerApiKey,
-                                   facebookActive: true,
-                                   branchActive: true,
-                                   firebaseActive: true,
+                                   facebookActive: false,
+                                   branchActive: false,
+                                   firebaseActive: false,
                                    applicationTag: GlobalDefinitions.applicationTag,
                                    userToken: SessionManagerCore().getSession()?.userToken,
                                    userId: SessionManagerCore().getSession()?.userId,
