@@ -7,6 +7,7 @@
 
 import UIKit
 import RxCocoa
+import OtterScaleiOS
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,8 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FacebookManager.shared.initialize(app: application, launchOptions: launchOptions)
         AmplitudeManager.shared.initialize()
         FirebaseManager.shared.initialize()
+        OtterScale.shared.initialize(host: GlobalDefinitions.otterScaleHost, apiKey: GlobalDefinitions.otterScaleApiKey)
         
-        addDelegates()
+        PurchaseValidationObserver.shared.startObserve()
         
         runProvider(on: vc.view)
         
@@ -68,26 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: SDKPurchaseMediatorDelegate
-extension AppDelegate: SDKPurchaseMediatorDelegate {
-    func purchaseMediatorDidValidateReceipt(response: ReceiptValidateResponse?) {
-        guard let response = response else {
-            return
-        }
-        
-        let session = Session(response: response)
-        
-        SessionManagerCore().store(session: session)
-    }
-}
-
-// MARK: SDKUserManagerMediatorDelegate
-extension AppDelegate: SDKUserManagerMediatorDelegate {
-    func userManagerMediatorDidReceivedFeatureApp(userToken: String) {
-        SessionManagerCore().set(userToken: userToken)
-    }
-}
-
 // MARK: Private
 private extension AppDelegate {
     func runProvider(on view: UIView) {
@@ -100,7 +82,7 @@ private extension AppDelegate {
                                    firebaseActive: false,
                                    applicationTag: GlobalDefinitions.applicationTag,
                                    userToken: SessionManagerCore().getSession()?.userToken,
-                                   userId: SessionManagerCore().getSession()?.userId,
+                                   userId: nil,
                                    view: view,
                                    shouldAddStorePayment: true,
                                    featureAppBackendUrl: GlobalDefinitions.domainUrl,
@@ -110,10 +92,5 @@ private extension AppDelegate {
         sdkProvider.initialize(settings: settings) { [weak self] in
             self?.generateStepInSplash.accept(Void())
         }
-    }
-    
-    func addDelegates() {
-        SDKStorage.shared.purchaseMediator.add(delegate: self)
-        SDKStorage.shared.userManagerMediator.add(delegate: self)
     }
 }

@@ -50,12 +50,12 @@ private extension SettingsViewController {
     func tapped(_ tapped: SettingsTableView.Tapped) {
         switch tapped {
         case .unlock:
-            UIApplication.shared.keyWindow?.rootViewController?.present(PaygateViewController.make(), animated: true)
+            UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.present(PaygateViewController.make(), animated: true)
             
             AmplitudeManager.shared
                 .logEvent(name: "Settings Tap", parameters: ["what": "unlock premium"])
         case .course:
-            UIApplication.shared.keyWindow?.rootViewController = CoursesViewController.make(howOpen: .root)
+            UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController = CoursesViewController.make(howOpen: .root)
             
             AmplitudeManager.shared
                 .logEvent(name: "Settings Tap", parameters: ["what": "select exam"])

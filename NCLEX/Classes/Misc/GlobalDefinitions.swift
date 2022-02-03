@@ -11,6 +11,9 @@ final class GlobalDefinitions {
 
     static let sdkDomainUrl = "https://analytics.korrekted.com"
     static let sdkApiKey = "eAb0dJRcLzCZNPJM"
+    
+    static let otterScaleHost = "https://api.korrekted.com"
+    static let otterScaleApiKey = "oCrVwRgejQISV560"
 
     static let applicationTag = "EXAM_NCLEX"
 

@@ -16,8 +16,7 @@ extension PaygateManagerCore {
         SDKStorage.shared
             .restApiTransport
             .callServerApi(requestBody: GetPaygateRequest(userToken: SessionManagerCore().getSession()?.userToken,
-                                                          version: UIDevice.appVersion ?? "1",
-                                                          usedProducts: SessionManagerCore().getSession()?.usedProducts ?? []))
+                                                          version: UIDevice.appVersion ?? "1"))
             .map { PaygateMapper.parse(response: $0, productsPrices: nil) }
     }
 }

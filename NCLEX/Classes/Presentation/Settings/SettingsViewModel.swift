@@ -48,10 +48,9 @@ private extension SettingsViewModel {
     }
     
     func activeSubscription() -> Driver<Bool> {
-        let updated = SDKStorage.shared
-            .purchaseMediator
-            .rxPurchaseMediatorDidValidateReceipt
-            .compactMap { $0?.activeSubscription }
+        let updated = PurchaseValidationObserver.shared
+            .didValidatedWithActiveSubscription
+            .map { SessionManagerCore().hasActiveSubscriptions() }
             .asDriver(onErrorJustReturn: false)
         
         let initial = Driver<Bool>
@@ -60,7 +59,7 @@ private extension SettingsViewModel {
                     return .never()
                 }
                 
-                let activeSubscription = this.sessionManager.getSession()?.activeSubscription ?? false
+                let activeSubscription = this.sessionManager.hasActiveSubscriptions()
                 
                 return .just(activeSubscription)
             }
