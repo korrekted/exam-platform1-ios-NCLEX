@@ -284,6 +284,8 @@
 		DE93754E27AC08520073F27C /* IAPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93754D27AC08520073F27C /* IAPError.swift */; };
 		DE93755027AC08630073F27C /* IAPProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93754F27AC08630073F27C /* IAPProduct.swift */; };
 		DE93755227AC08710073F27C /* IAPActionResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93755127AC08710073F27C /* IAPActionResult.swift */; };
+		DE93755427AC1D580073F27C /* BranchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93755327AC1D580073F27C /* BranchManager.swift */; };
+		DE93755727ACDBD10073F27C /* SplashReceiptValidationObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE93755627ACDBD10073F27C /* SplashReceiptValidationObserver.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -590,6 +592,8 @@
 		DE93754D27AC08520073F27C /* IAPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPError.swift; sourceTree = "<group>"; };
 		DE93754F27AC08630073F27C /* IAPProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPProduct.swift; sourceTree = "<group>"; };
 		DE93755127AC08710073F27C /* IAPActionResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPActionResult.swift; sourceTree = "<group>"; };
+		DE93755327AC1D580073F27C /* BranchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchManager.swift; sourceTree = "<group>"; };
+		DE93755627ACDBD10073F27C /* SplashReceiptValidationObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashReceiptValidationObserver.swift; sourceTree = "<group>"; };
 		E1F36D41DB121197042C2BB6 /* Pods-NCLEX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NCLEX.debug.xcconfig"; path = "Target Support Files/Pods-NCLEX/Pods-NCLEX.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1284,6 +1288,7 @@
 		DE341EC32770453000632F72 /* Splash */ = {
 			isa = PBXGroup;
 			children = (
+				DE93755527ACDBA60073F27C /* Utils */,
 				DE341EC42770453000632F72 /* SplashViewController.swift */,
 				DE341EC52770453000632F72 /* SplashViewModel.swift */,
 				DE341EC62770453000632F72 /* SplashView.swift */,
@@ -1698,6 +1703,7 @@
 				DE93753827ABB2080073F27C /* AmplitudeManager.swift */,
 				DE93753A27ABBB9F0073F27C /* FirebaseManager.swift */,
 				DE93753C27ABC80A0073F27C /* FacebookManager.swift */,
+				DE93755327AC1D580073F27C /* BranchManager.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -1729,6 +1735,14 @@
 				DE93755127AC08710073F27C /* IAPActionResult.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		DE93755527ACDBA60073F27C /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				DE93755627ACDBD10073F27C /* SplashReceiptValidationObserver.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		EFC5C13FB4813BBF4FA69A9C /* Pods */ = {
@@ -2056,6 +2070,7 @@
 				DE341FBB2770453000632F72 /* Stats.swift in Sources */,
 				DE341F792770453000632F72 /* PaddingPickerView.swift in Sources */,
 				DE3420052770453000632F72 /* PaygateMainInfoCell.swift in Sources */,
+				DE93755427AC1D580073F27C /* BranchManager.swift in Sources */,
 				DE341FDA2770453000632F72 /* SCTakeTestCell.swift in Sources */,
 				DE341FBA2770453000632F72 /* Brief.swift in Sources */,
 				DE341FE02770453000632F72 /* StudyCollectionView.swift in Sources */,
@@ -2063,6 +2078,7 @@
 				DE341FE62770453000632F72 /* TabView.swift in Sources */,
 				DE34200A2770453000632F72 /* TestStatsProgressCell.swift in Sources */,
 				DE341F962770453000632F72 /* TestConfig.swift in Sources */,
+				DE93755727ACDBD10073F27C /* SplashReceiptValidationObserver.swift in Sources */,
 				DE93754E27AC08520073F27C /* IAPError.swift in Sources */,
 				DE3420102770453000632F72 /* TestStatsDescriptionElement.swift in Sources */,
 				DE34202B2770453000632F72 /* MainProgressView.swift in Sources */,

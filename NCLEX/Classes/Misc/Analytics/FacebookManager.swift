@@ -56,6 +56,10 @@ extension FacebookManager {
         SKPaymentQueue.default().add(self)
     }
     
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) {
+        ApplicationDelegate.shared.application(app, open: url, options: options)
+    }
+    
     func set(userID: String) {
         AppEvents.shared.userID = userID
     }

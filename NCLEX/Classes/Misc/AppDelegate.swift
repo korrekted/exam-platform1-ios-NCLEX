@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         FacebookManager.shared.initialize(app: application, launchOptions: launchOptions)
+        BranchManager.shared.initialize(launchOptions: launchOptions)
         AmplitudeManager.shared.initialize()
         FirebaseManager.shared.initialize()
         OtterScale.shared.initialize(host: GlobalDefinitions.otterScaleHost, apiKey: GlobalDefinitions.otterScaleApiKey)
@@ -44,11 +45,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         sdkProvider.application(app, open: url, options: options)
         
+        FacebookManager.shared.application(app, open: url, options: options)
+        BranchManager.shared.application(app, open: url, options: options)
+        
         return true
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         sdkProvider.application(application, continue: userActivity, restorationHandler: restorationHandler)
+        
+        BranchManager.shared.application(continue: userActivity)
         
         return true
     }

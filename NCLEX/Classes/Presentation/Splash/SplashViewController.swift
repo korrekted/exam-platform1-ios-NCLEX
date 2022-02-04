@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import OtterScaleiOS
 
 final class SplashViewController: UIViewController {
     lazy var mainView = SplashView()
@@ -17,6 +18,8 @@ final class SplashViewController: UIViewController {
     private lazy var viewModel = SplashViewModel()
     
     private let generateStep: Signal<Void>
+    
+    private lazy var validationObserver = SplashReceiptValidationObserver()
     
     private init(generateStep: Signal<Void>) {
         self.generateStep = generateStep
@@ -35,12 +38,29 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        generateStep
-            .delay(RxTimeInterval.seconds(1))
-            .flatMap { [weak self] in
-                self?.viewModel.step() ?? .empty()
+        viewModel.step()
+            .drive(onNext: { [weak self] step in
+                self?.step(step)
+            })
+            .disposed(by: disposeBag)
+        
+        let validationObserve = Single<Void>
+            .create { [weak self] event in
+                guard let self = self else {
+                    return Disposables.create()
+                }
+                
+                self.validationObserver.observe {
+                    event(.success(Void()))
+                }
+                
+                return Disposables.create()
             }
-            .drive(onNext: step(_:))
+            .asSignal(onErrorSignalWith: .empty())
+        
+        Signal.zip(validationObserve, generateStep)
+            .map { _, _ in Void() }
+            .emit(to: viewModel.validationComplete)
             .disposed(by: disposeBag)
     }
 }
