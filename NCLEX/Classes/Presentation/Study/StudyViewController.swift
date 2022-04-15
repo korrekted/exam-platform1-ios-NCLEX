@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RushSDK
 
 final class StudyViewController: UIViewController {
     lazy var mainView = StudyView()
@@ -27,7 +28,8 @@ final class StudyViewController: UIViewController {
         viewModel
             .courseName
             .drive(onNext: { name in
-                AmplitudeManager.shared
+                SDKStorage.shared
+                    .amplitudeManager
                     .logEvent(name: "Study Screen", parameters: ["exam": name])
             })
             .disposed(by: disposeBag)
@@ -55,6 +57,24 @@ final class StudyViewController: UIViewController {
                 self?.selected(element: element, activeSubscription: activeSubscription)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.tryAgain = { [weak self] error -> Observable<Void> in
+            guard let self = self else {
+                return .never()
+            }
+            
+            return self.openError()
+        }
+        
+        viewModel.activityIndicator
+            .drive(onNext: { [weak self] activity in
+                guard let self = self else {
+                    return
+                }
+                
+                self.activity(activity)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -72,7 +92,8 @@ private extension StudyViewController {
     func settingsTapped() {
         navigationController?.pushViewController(SettingsViewController.make(), animated: true)
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Study Tap", parameters: ["what": "settings"])
     }
     
@@ -83,12 +104,14 @@ private extension StudyViewController {
         case .unlockAllQuestions:
             openPaygate()
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "unlock all questions"])
         case .takeTest(let activeSubscription):
             openTest(type: .get(testId: nil), activeSubscription: activeSubscription)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "take a free test"])
         case .mode(let mode):
             tapped(mode: mode.mode, activeSubscription: activeSubscription)
@@ -100,22 +123,26 @@ private extension StudyViewController {
         case .ten:
             openTest(type: .tenSet, activeSubscription: activeSubscription)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "10 questions"])
         case .random:
             openTest(type: .randomSet, activeSubscription: activeSubscription)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "random set"])
         case .missed:
             openTest(type: .failedSet, activeSubscription: activeSubscription)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "missed questions"])
         case .today:
             openTest(type: .qotd, activeSubscription: activeSubscription)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Study Tap", parameters: ["what": "question of the day"])
         }
     }
@@ -132,5 +159,29 @@ private extension StudyViewController {
     
     func openPaygate() {
         UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.present(PaygateViewController.make(), animated: true)
+    }
+    
+    func openError() -> Observable<Void> {
+        Observable<Void>
+            .create { [weak self] observe in
+                guard let self = self else {
+                    return Disposables.create()
+                }
+                
+                let vc = TryAgainViewController.make {
+                    observe.onNext(())
+                }
+                self.present(vc, animated: true)
+                
+                return Disposables.create()
+            }
+    }
+    
+    func activity(_ activity: Bool) {
+        let empty = mainView.collectionView.sections.isEmpty
+        
+        let inProgress = empty && activity
+        
+        inProgress ? mainView.preloader.startAnimating() : mainView.preloader.stopAnimating()
     }
 }

@@ -15,8 +15,8 @@ final class OSlidePreloaderView: OSlideView {
     
     private var timer: Timer?
     
-    override init(step: OnboardingView.Step) {
-        super.init(step: step)
+    override init(step: OnboardingView.Step, scope: OnboardingScope) {
+        super.init(step: step, scope: scope)
         
         makeConstraints()
     }
@@ -29,7 +29,8 @@ final class OSlidePreloaderView: OSlideView {
         progressView.progressAnimation(duration: 4.5)
         calculatePercent()
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Plan Preparing Screen", parameters: [:])
     }
 }

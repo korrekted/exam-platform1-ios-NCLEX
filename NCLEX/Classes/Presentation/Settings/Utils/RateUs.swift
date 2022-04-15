@@ -9,7 +9,8 @@ import StoreKit
 
 final class RateUs {
     static func requestReview() {
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Rating Request ", parameters: [:])
         
         SKStoreReviewController.requestReview()

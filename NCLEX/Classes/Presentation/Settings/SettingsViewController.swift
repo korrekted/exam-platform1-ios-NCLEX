@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RushSDK
 
 final class SettingsViewController: UIViewController {
     lazy var mainView = SettingsView()
@@ -23,17 +24,32 @@ final class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Settings Screen", parameters: [:])
         
         viewModel
             .sections
-            .drive(onNext: mainView.tableView.setup(sections:))
+            .drive(onNext: { [weak self] sections in
+                self?.mainView.tableView.setup(sections: sections)
+            })
             .disposed(by: disposeBag)
         
         mainView
             .tableView.tapped
-            .subscribe(onNext: tapped(_:))
+            .subscribe(onNext: { [weak self] value in
+                self?.tapped(value)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.activityIndicator
+            .drive(onNext: { [weak self] activity in
+                guard let self = self else {
+                    return
+                }
+                
+                self.activity(activity)
+            })
             .disposed(by: disposeBag)
     }
 }
@@ -52,37 +68,44 @@ private extension SettingsViewController {
         case .unlock:
             UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController?.present(PaygateViewController.make(), animated: true)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "unlock premium"])
         case .course:
             UIApplication.shared.windows.filter {$0.isKeyWindow}.first?.rootViewController = CoursesViewController.make(howOpen: .root)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "select exam"])
         case .rateUs:
             RateUs.requestReview()
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "rate us"])
         case .contactUs:
             open(path: GlobalDefinitions.contactUsUrl)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "contact us"])
         case .termsOfUse:
             open(path: GlobalDefinitions.termsOfServiceUrl)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "terms of use"])
         case .privacyPoliicy:
             open(path: GlobalDefinitions.privacyPolicyUrl)
             
-            AmplitudeManager.shared
+            SDKStorage.shared
+                .amplitudeManager
                 .logEvent(name: "Settings Tap", parameters: ["what": "privacy policy"])
         case .mode(let testMode):
             screenOpener.open(screen: .mode(testMode), from: self)
         case .references:
-            screenOpener.open(screen: .references, from: self)
+//            screenOpener.open(screen: .references, from: self)
+            break
         }
     }
     
@@ -92,5 +115,13 @@ private extension SettingsViewController {
         }
         
         UIApplication.shared.open(url, options: [:])
+    }
+    
+    func activity(_ activity: Bool) {
+        let empty = mainView.tableView.sections.isEmpty
+        
+        let inProgress = empty && activity
+        
+        inProgress ? mainView.preloader.startAnimating() : mainView.preloader.stopAnimating()
     }
 }

@@ -19,8 +19,8 @@ final class OSlideImproveView: OSlideView {
     lazy var tag8 = makeTag(title: "Onboarding.Improve.Cell8", tag: 8)
     lazy var button = makeButton()
     
-    override init(step: OnboardingView.Step) {
-        super.init(step: step)
+    override init(step: OnboardingView.Step, scope: OnboardingScope) {
+        super.init(step: step, scope: scope)
         
         makeConstraints()
     }
@@ -32,7 +32,8 @@ final class OSlideImproveView: OSlideView {
     override func moveToThis() {
         super.moveToThis()
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Improve Screen", parameters: [:])
     }
 }

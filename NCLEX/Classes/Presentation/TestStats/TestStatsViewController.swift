@@ -72,7 +72,8 @@ private extension TestStatsViewController {
         
         let name = TestAnalytics.name(mode: type)
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Test Stats Screen", parameters: ["course": courseName,
                                                               "mode": name])
     }

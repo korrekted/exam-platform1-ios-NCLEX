@@ -17,8 +17,8 @@ final class OSlideWelcomeView: OSlideView {
         .font(Fonts.SFProRounded.semiBold(size: 20.scale))
         .textAlignment(.center)
     
-    override init(step: OnboardingView.Step) {
-        super.init(step: step)
+    override init(step: OnboardingView.Step, scope: OnboardingScope) {
+        super.init(step: step, scope: scope)
         
         makeConstraints()
         initialize()
@@ -54,7 +54,8 @@ private extension OSlideWelcomeView {
         
         indicatorView.index = 1
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Welcome Screen", parameters: ["number": 1])
     }
     
@@ -67,7 +68,8 @@ private extension OSlideWelcomeView {
             return
         }
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Welcome Screen", parameters: ["number": indicatorView.index])
         
         scroll()

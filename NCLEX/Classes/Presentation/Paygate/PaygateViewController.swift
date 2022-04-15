@@ -38,7 +38,8 @@ final class PaygateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Paygate Screen", parameters: [:])
         
         addMainOptionsSelection()

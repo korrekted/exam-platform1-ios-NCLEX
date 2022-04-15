@@ -10,7 +10,6 @@ target 'NCLEX' do
   pod 'Kingfisher'
   
   pod 'RushSDK', :git => "https://github.com/AgentChe/RushSDK.git"
-  pod 'OtterScaleiOS', :git => "https://github.com/AgentChe/OtterScaleiOS.git"
 end
 
 post_install do |installer|

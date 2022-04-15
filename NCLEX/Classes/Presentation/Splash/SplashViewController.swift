@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import OtterScaleiOS
 
 final class SplashViewController: UIViewController {
     lazy var mainView = SplashView()
@@ -17,11 +16,11 @@ final class SplashViewController: UIViewController {
     
     private lazy var viewModel = SplashViewModel()
     
-    private let generateStep: Signal<Void>
+    private lazy var sdkInitialize = SplashSDKInitialize(vc: self, rushSDKSignal: generateStep)
     
-    private lazy var validationObserver = SplashReceiptValidationObserver()
+    private let generateStep: Signal<Bool>
     
-    private init(generateStep: Signal<Void>) {
+    private init(generateStep: Signal<Bool>) {
         self.generateStep = generateStep
         
         super.init(nibName: nil, bundle: .main)
@@ -38,36 +37,49 @@ final class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        sdkInitialize.initialize { [weak self] progress in
+            guard let self = self else {
+                return
+            }
+            
+            switch progress {
+            case .error:
+                self.activity(state: .none)
+            case .initializing:
+                self.activity(state: .sdkInitialize)
+            case .complete:
+                // MARK: задержка, чтобы токен успел сохраниться до запросов на кеширование контента
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                    self.activity(state: .library)
+                    self.viewModel.validationComplete.accept(Void())
+                }
+            }
+        }
+        
         viewModel.step()
             .drive(onNext: { [weak self] step in
-                self?.step(step)
+                guard let self = self else {
+                    return
+                }
+                
+                self.activity(state: step == .onboarding ? .prepareOnboarding : .none)
+                self.step(step)
             })
             .disposed(by: disposeBag)
         
-        let validationObserve = Single<Void>
-            .create { [weak self] event in
-                guard let self = self else {
-                    return Disposables.create()
-                }
-                
-                self.validationObserver.observe {
-                    event(.success(Void()))
-                }
-                
-                return Disposables.create()
+        viewModel.tryAgain = { [weak self] error -> Observable<Void> in
+            guard let self = self else {
+                return .never()
             }
-            .asSignal(onErrorSignalWith: .empty())
-        
-        Signal.zip(validationObserve, generateStep)
-            .map { _, _ in Void() }
-            .emit(to: viewModel.validationComplete)
-            .disposed(by: disposeBag)
+            
+            return self.openError()
+        }
     }
 }
 
 // MARK: Make
 extension SplashViewController {
-    static func make(generateStep: Signal<Void>) -> SplashViewController {
+    static func make(generateStep: Signal<Bool>) -> SplashViewController {
         SplashViewController(generateStep: generateStep)
     }
 }
@@ -75,7 +87,14 @@ extension SplashViewController {
 // MARK: PaygateViewControllerDelegate
 extension SplashViewController: PaygateViewControllerDelegate {
     func paygateDidClosed(with result: PaygateViewControllerResult) {
-        step(viewModel.stepAfterPaygateClosed())
+        step(.course)
+    }
+}
+
+// MARK: CoursesViewControllerDelegate
+extension SplashViewController: CoursesViewControllerDelegate {
+    func coursesViewControllerDismissed() {
+        viewModel.courseSelected.accept(Void())
     }
 }
 
@@ -91,6 +110,38 @@ private extension SplashViewController {
             let vc = PaygateViewController.make()
             vc.delegate = self
             present(vc, animated: true)
+        case .courses:
+            let vc = CoursesViewController.make(howOpen: .present)
+            vc.delegate = self
+            present(vc, animated: true)
         }
+    }
+    
+    func activity(state: SplashActivity) {
+        state == .none ? mainView.preloaderView.stopAnimating() : mainView.preloaderView.startAnimating()
+        
+        let attrs = TextAttributes()
+            .textColor(UIColor(integralRed: 75, green: 81, blue: 102))
+            .font(Fonts.SFProRounded.regular(size: 17.scale))
+            .lineHeight(23.8.scale)
+            .textAlignment(.center)
+        mainView.preloaderLabel.attributedText = state.text.attributed(with: attrs)
+    }
+    
+    func openError() -> Observable<Void> {
+        Observable<Void>
+            .create { [weak self] observe in
+                guard let self = self else {
+                    return Disposables.create()
+                }
+                
+                let vc = TryAgainViewController.make {
+                    observe.onNext(())
+                }
+                self.present(vc, animated: true)
+                
+                return Disposables.create()
+            }
+        
     }
 }

@@ -13,8 +13,8 @@ final class OSlideWidgetsView: OSlideView {
     lazy var subtitleLabel = makeSubtitleLabel()
     lazy var button = makeButton()
     
-    override init(step: OnboardingView.Step) {
-        super.init(step: step)
+    override init(step: OnboardingView.Step, scope: OnboardingScope) {
+        super.init(step: step, scope: scope)
         
         makeConstraints()
     }
@@ -26,7 +26,8 @@ final class OSlideWidgetsView: OSlideView {
     override func moveToThis() {
         super.moveToThis()
         
-        AmplitudeManager.shared
+        SDKStorage.shared
+            .amplitudeManager
             .logEvent(name: "Widgets Screen", parameters: [:])
     }
 }

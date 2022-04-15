@@ -19,8 +19,9 @@ extension RateManagerCore {
         
         guard !isFirstAfterPass else { return }
         
-        AmplitudeManager.shared
-            .logEvent(name: "Rating Request", parameters: [:])
+        SDKStorage.shared
+            .amplitudeManager
+            .logEvent(name: "Rating Request ", parameters: [:])
         
         SKStoreReviewController.requestReview()
         UserDefaults.standard.setValue(true, forKey: Constants.showFirstAfterPass)

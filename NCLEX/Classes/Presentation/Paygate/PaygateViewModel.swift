@@ -24,9 +24,9 @@ final class PaygateViewModel {
     let restoreProcessing = RxActivityIndicator()
     let retrieveCompleted = BehaviorRelay<Bool>(value: false)
     
-    private lazy var paygateManager = PaygateManagerCore()
-    private lazy var purchaseInteractor = PaygateInteractor()
-    private lazy var monetizatiionManager = MonetizationManagerCore()
+    private lazy var paygateManager = PaygateManager()
+    private lazy var purchaseInteractor = SDKStorage.shared.purchaseInteractor
+    private lazy var monetizatiionManager = MonetizationManager()
 }
 
 // MARK: Monetization
@@ -49,7 +49,7 @@ extension PaygateViewModel {
 extension PaygateViewModel {
     func retrieve() -> Driver<(Paygate?, Bool)> {
         let paygate = paygateManager
-            .retrievePaygate()
+            .retrievePaygate(forceUpdate: false)
             .asDriver(onErrorJustReturn: nil)
         
         let prices = paygate
@@ -78,11 +78,11 @@ private extension PaygateViewModel {
         let purchase = buy
             .flatMapLatest { [purchaseInteractor, buyProcessing] productId -> Observable<Bool> in
                 purchaseInteractor
-                    .makeActiveSubscription(by: .buy(productId))
+                    .makeActiveSubscriptionByBuy(productId: productId)
                     .map { result -> Bool in
                         switch result {
                         case .completed(let response):
-                            return response
+                            return response != nil
                         case .cancelled:
                             return false
                         }
@@ -99,11 +99,11 @@ private extension PaygateViewModel {
         let purchase = restore
             .flatMapLatest { [purchaseInteractor, restoreProcessing] productId -> Observable<Bool> in
                 purchaseInteractor
-                    .makeActiveSubscription(by: .restore)
+                    .makeActiveSubscriptionByRestore()
                     .map { result -> Bool in
                         switch result {
                         case .completed(let response):
-                            return response
+                            return response != nil
                         case .cancelled:
                             return false
                         }
